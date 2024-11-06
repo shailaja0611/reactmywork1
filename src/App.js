@@ -96,123 +96,192 @@
 // export default App;
 
 
-import { useState } from "react";
+// import { useState } from "react";
+// import './App.css'
+
+// function Crud() {
+  
+//   const [itemData, setItemData] = useState({
+//     name: "",
+//     employeeId: "",
+//     email: "",
+//     city: "",
+//     description: "",
+//   });
+//   const [items, setItems] = useState([]);
+//   const [isEditing, setIsEditing] = useState(false);
+//   const [editItemId, setEditItemId] = useState(null);
+
+//   const handleChange = (e) => {
+//     const { name, value } = e.target;
+//     setItemData({ ...itemData, [name]: value });
+//   };
+
+//   const handleSubmission = (e) => {
+//     e.preventDefault();
+//     if (isEditing) {
+//       setItems(
+//         items.map((item) =>
+//           item.id === editItemId ? { ...item, ...itemData } : item
+//         )
+//       );
+//       setIsEditing(false);
+//       setEditItemId(null);
+//     } else {
+//       setItems([...items, { ...itemData, id: Date.now() }]);
+//     }
+//     setItemData({ name: "", employeeId: "", email: "", city: "", description: "" });
+//   };
+
+//   const editItem = (item) => {
+//     setItemData({
+//       name: item.name,
+//       employeeId: item.employeeId,
+//       email: item.email,
+//       city: item.city,
+//       description: item.description,
+//     });
+//     setIsEditing(true);
+//     setEditItemId(item.id);
+//   };
+
+//   const deleteItem = (id) => {
+//     setItems(items.filter((item) => item.id !== id));
+//   };
+
+//   return (
+//     <div>
+//       <h1>CRUD Operations</h1>
+//       <form onSubmit={handleSubmission}>
+//         <input
+//           type="text"
+//           name="name"
+//           placeholder="Name"
+//           value={itemData.name}
+//           onChange={handleChange}
+//           required
+//         />
+//         <input
+//           type="text"
+//           name="employeeId"
+//           placeholder="Employee ID"
+//           value={itemData.employeeId}
+//           onChange={handleChange}
+//           required
+//         />
+//         <input
+//           type="email"
+//           name="email"
+//           placeholder="Email"
+//           value={itemData.email}
+//           onChange={handleChange}
+//           required
+//         />
+//         <input
+//           type="text"
+//           name="city"
+//           placeholder="City"
+//           value={itemData.city}
+//           onChange={handleChange}
+//           required
+//         />
+//         <input
+//           type="text"
+//           name="description"
+//           placeholder="Description"
+//           value={itemData.description}
+//           onChange={handleChange}
+//           required
+//         />
+//         <button type="submit">{isEditing ? "Update" : "Add"}</button>
+//       </form>
+
+//       <div>
+//         <h2>Items</h2>
+//         <ul>
+//           {items.map((item) => (
+//             <li key={item.id}>
+//               <span>
+//                 {item.name} ({item.employeeId}) - {item.email} - {item.city} :{" "}
+//                 {item.description}
+//               </span>
+//               <button onClick={() => editItem(item)}>Edit</button>
+//               <button onClick={() => deleteItem(item.id)}>Delete</button>
+//             </li>
+//           ))}
+//         </ul>
+//       </div>
+//     </div>
+//   );
+// }
+
+// export default Crud;
+
+
+
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import './App.css'
 
-function Crud() {
+
+import Home from './Home';
+import About from './About';
+import Services from './Services';
+import Contact from './Contact';
+import User from './User';
+
+const App = () => {
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   
-  const [itemData, setItemData] = useState({
-    name: "",
-    employeeId: "",
-    email: "",
-    city: "",
-    description: "",
-  });
-  const [items, setItems] = useState([]);
-  const [isEditing, setIsEditing] = useState(false);
-  const [editItemId, setEditItemId] = useState(null);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setItemData({ ...itemData, [name]: value });
-  };
-
-  const handleSubmission = (e) => {
-    e.preventDefault();
-    if (isEditing) {
-      setItems(
-        items.map((item) =>
-          item.id === editItemId ? { ...item, ...itemData } : item
-        )
-      );
-      setIsEditing(false);
-      setEditItemId(null);
-    } else {
-      setItems([...items, { ...itemData, id: Date.now() }]);
-    }
-    setItemData({ name: "", employeeId: "", email: "", city: "", description: "" });
-  };
-
-  const editItem = (item) => {
-    setItemData({
-      name: item.name,
-      employeeId: item.employeeId,
-      email: item.email,
-      city: item.city,
-      description: item.description,
-    });
-    setIsEditing(true);
-    setEditItemId(item.id);
-  };
-
-  const deleteItem = (id) => {
-    setItems(items.filter((item) => item.id !== id));
+  const toggleLogin = () => {
+    setIsLoggedIn(!isLoggedIn);
   };
 
   return (
-    <div>
-      <h1>CRUD Operations</h1>
-      <form onSubmit={handleSubmission}>
-        <input
-          type="text"
-          name="name"
-          placeholder="Name"
-          value={itemData.name}
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="text"
-          name="employeeId"
-          placeholder="Employee ID"
-          value={itemData.employeeId}
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          value={itemData.email}
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="text"
-          name="city"
-          placeholder="City"
-          value={itemData.city}
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="text"
-          name="description"
-          placeholder="Description"
-          value={itemData.description}
-          onChange={handleChange}
-          required
-        />
-        <button type="submit">{isEditing ? "Update" : "Add"}</button>
-      </form>
-
+    <Router>
       <div>
-        <h2>Items</h2>
-        <ul>
-          {items.map((item) => (
-            <li key={item.id}>
-              <span>
-                {item.name} ({item.employeeId}) - {item.email} - {item.city} :{" "}
-                {item.description}
-              </span>
-              <button onClick={() => editItem(item)}>Edit</button>
-              <button onClick={() => deleteItem(item.id)}>Delete</button>
+        
+        <nav>
+          <ul>
+            <li>
+              <Link to="/">Home</Link>
             </li>
-          ))}
-        </ul>
-      </div>
-    </div>
-  );
-}
+            <li>
+              <Link to="/about">About</Link>
+            </li>
+            <li>
+              <Link to="/services">Services</Link>
+            </li>
+            <li>
+              <Link to="/Contact">Contact</Link>
+            </li>
+            
+            {isLoggedIn && (
+              <li>
+                <Link to="/user">User Profile</Link>
+              </li>
+            )}
+          </ul>
+        </nav>
 
-export default Crud;
+      
+        <button onClick={toggleLogin}>
+          {isLoggedIn ? "Log out" : "Log in"}
+        </button>
+
+      
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/services" element={<Services />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/user" element={isLoggedIn ? <User /> : <Home />} /> 
+        </Routes>
+      </div>
+    </Router>
+  );
+};
+
+export default App;

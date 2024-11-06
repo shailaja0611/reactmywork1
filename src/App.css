@@ -1,8 +1,8 @@
-body{
+/* body{
   border:4px solid brown;
 }
 /* src/App.css */
-
+/* 
 .App {
   font-family: Arial, sans-serif;
   max-width: 400px;
@@ -31,7 +31,7 @@ li {
   border-bottom: 1px solid #ccc;
 }
 /* General body and font styling */
-body {
+/* body {
   font-family: Arial, sans-serif;
   background-color: #f4f4f9;
   margin: 0;
@@ -39,16 +39,16 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-}
+  height: 100vh; */
+/* }
 
 h1 {
   color: #333;
   text-align: center;
-}
+}  */
 
 /* Styling for the form */
-form {
+/* form {
   background-color: #fff;
   padding: 20px;
   border-radius: 8px;
@@ -94,7 +94,7 @@ button:disabled {
 }
 
 /* Items list section */
-ul {
+/* ul {
   list-style-type: none;
   padding: 0;
   margin: 0;
@@ -143,10 +143,10 @@ button + button {
 
 button + button:hover {
   background-color: #357ab7;
-}
+} */
 
 /* Responsive Design */
-@media (max-width: 600px) {
+/* @media (max-width: 600px) {
   form {
     width: 100%;
     padding: 15px;
@@ -165,4 +165,74 @@ button + button:hover {
   input[type="email"] {
     font-size: 14px;
   }
+} */ 
+
+
+* {
+  margin: 0;
+  padding: 0;
+  
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  color: #333;
+  
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+
+#root {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  flex-direction: column;
+}
+
+nav {
+  background-color: #333;
+  padding: 10px;
+  width: 100%;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+}
+
+nav ul li {
+  margin: 0 20px;
+}
+
+nav a {
+  color: white;
+  font-size: 18px;
+  padding: 8px 16px;
+}
+
+nav a:hover {
+  background-color: #575757;
+  border-radius: 5px;
+}
+
+button {
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+button:hover {
+  background-color: #0056b3;
 }
