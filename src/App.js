@@ -218,26 +218,42 @@
 // export default Crud;
 
 
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import './App.css'
 
 
-import Home from './Home';
-import About from './About';
-import Services from './Services';
-import Contact from './Contact';
-import User from './User';
+import './App.css';
+
+// Dummy page components for routing (You can define them in separate files if needed)
+const Home = () => <div><h2>Home Page</h2></div>;
+const About = () => <div><h2>About Page</h2></div>;
+const Services = () => <div><h2>Services Page</h2></div>;
+const Contact = () => <div><h2>Contact Page</h2></div>;
+const User = () => <div><h2>User Profile</h2></div>;
 
 const App = () => {
-
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [data, setData] = useState([]);
 
   
   const toggleLogin = () => {
     setIsLoggedIn(!isLoggedIn);
   };
+
+  
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('https://fakestoreapi.com/products');
+        const result = await response.json();
+        setData(result);
+      } catch (error) {
+        console.error('Error fetching data: ', error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <Router>
@@ -255,9 +271,8 @@ const App = () => {
               <Link to="/services">Services</Link>
             </li>
             <li>
-              <Link to="/Contact">Contact</Link>
+              <Link to="/contact">Contact</Link>
             </li>
-            
             {isLoggedIn && (
               <li>
                 <Link to="/user">User Profile</Link>
@@ -266,19 +281,61 @@ const App = () => {
           </ul>
         </nav>
 
-      
+        
         <button onClick={toggleLogin}>
-          {isLoggedIn ? "Log out" : "Log in"}
+          {isLoggedIn ? 'Log out' : 'Log in'}
         </button>
 
-      
+        
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/services" element={<Services />} />
           <Route path="/contact" element={<Contact />} />
-          <Route path="/user" element={isLoggedIn ? <User /> : <Home />} /> 
+          <Route path="/user" element={isLoggedIn ? <User /> : <Home />} />
         </Routes>
+
+        
+        <div>
+          <h1>Products from the Store</h1>
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(3, 300px)',
+              gap: '20px',
+              maxHeight: '400px',
+              overflowY: 'auto',
+              padding: '20px',
+            }}
+          >
+            {data.map((item) => (
+              <div
+                key={item.id}
+                className="bg-success col"
+                style={{
+                  border: '1px solid #ddd',
+                  padding: '10px',
+                  textAlign: 'center',
+                  boxShadow: '0 2px 5px rgba(0,0,0,0.1)',
+                }}
+              >
+                <h1>{item.category}</h1>
+                <p>{item.description}</p>
+                <p>{item.id}</p>
+                <img
+                  src={item.image}
+                  alt={item.title}
+                  style={{ width: '100px' }}
+                />
+                <p className="text-primary">Price: ${item.price}</p>
+                <p>
+                  Rating: {item.rating.rate} ({item.rating.count} reviews)
+                </p>
+                <p>{item.title}</p>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </Router>
   );
