@@ -217,125 +217,126 @@
 
 // export default Crud;
 
-
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-
-
 import './App.css';
 
-// Dummy page components for routing (You can define them in separate files if needed)
 const Home = () => <div><h2>Home Page</h2></div>;
 const About = () => <div><h2>About Page</h2></div>;
 const Services = () => <div><h2>Services Page</h2></div>;
 const Contact = () => <div><h2>Contact Page</h2></div>;
 const User = () => <div><h2>User Profile</h2></div>;
 
-const App = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [data, setData] = useState([]);
+const FetchCategory = () => {
+  const [categories, setCategories] = useState([]);
+  const [filterData, setFilterData] = useState([]);
 
   
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch('https://fakestoreapi.com/products/categories');
+        const data = await response.json();
+        setCategories(data);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+    fetchCategories();
+  }, []);
+
+  
+  const handleFilterCategory = async (category) => {
+    try {
+      const response = await fetch(`https://fakestoreapi.com/products/category/${category}`);
+      const data = await response.json();
+      setFilterData(data); 
+    } catch (error) {
+      console.error("Error fetching products by category:", error);
+    }
+  };
+
+  return (
+    <div>
+      <h1>Fetching Categories and Products</h1>
+      
+      {/* Category Buttons */}
+      <div style={{ display: 'flex', flexDirection: 'row', gap: '20px', marginBottom: '20px' }}>
+        {categories.map((category) => (
+          <button key={category} onClick={() => handleFilterCategory(category)}>
+            {category}
+          </button>
+        ))}
+      </div>
+
+      {/* Filtered Products */}
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(3, 400px)',
+        gap: '20px',
+      }}>
+        {filterData.length === 0 ? (
+          <p>No products available for this category</p>
+        ) : (
+          filterData.map((product) => (
+            <Link to="/productdetails" state={{ id: product.id }} key={product.id}>
+              <div style={{
+                border: '1px solid #ddd',
+                padding: '10px',
+                boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)',
+                textAlign: 'center',
+              }}>
+                <img
+                  src={product.image}
+                  alt={product.title}
+                  style={{ width: '200px', height: '200px', objectFit: 'cover' }}
+                />
+                <h3>{product.title}</h3>
+                <p>{product.description}</p>
+                <p><strong>Price:</strong> ${product.price}</p>
+                <p><strong>Category:</strong> {product.category}</p>
+              </div>
+            </Link>
+          ))
+        )}
+      </div>
+    </div>
+  );
+};
+
+const App = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   const toggleLogin = () => {
     setIsLoggedIn(!isLoggedIn);
   };
 
-  
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch('https://fakestoreapi.com/products');
-        const result = await response.json();
-        setData(result);
-      } catch (error) {
-        console.error('Error fetching data: ', error);
-      }
-    };
-
-    fetchData();
-  }, []);
-
   return (
     <Router>
       <div>
-        
         <nav>
           <ul>
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/about">About</Link>
-            </li>
-            <li>
-              <Link to="/services">Services</Link>
-            </li>
-            <li>
-              <Link to="/contact">Contact</Link>
-            </li>
-            {isLoggedIn && (
-              <li>
-                <Link to="/user">User Profile</Link>
-              </li>
-            )}
+            <li><Link to="/">Home</Link></li>
+            <li><Link to="/about">About</Link></li>
+            <li><Link to="/services">Services</Link></li>
+            <li><Link to="/contact">Contact</Link></li>
+            <li><Link to="/categories">Categories</Link></li>
+            {isLoggedIn && <li><Link to="/user">User Profile</Link></li>}
           </ul>
         </nav>
 
-        
         <button onClick={toggleLogin}>
           {isLoggedIn ? 'Log out' : 'Log in'}
         </button>
 
-        
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/services" element={<Services />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/categories" element={<FetchCategory />} />
           <Route path="/user" element={isLoggedIn ? <User /> : <Home />} />
         </Routes>
-
-        
-        <div>
-          <h1>Products from the Store</h1>
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(3, 300px)',
-              gap: '20px',
-              maxHeight: '400px',
-              overflowY: 'auto',
-              padding: '20px',
-            }}
-          >
-            {data.map((item) => (
-              <div
-                key={item.id}
-                className="bg-success col"
-                style={{
-                  border: '1px solid #ddd',
-                  padding: '10px',
-                  textAlign: 'center',
-                  boxShadow: '0 2px 5px rgba(0,0,0,0.1)',
-                }}
-              >
-                <h1>{item.category}</h1>
-                <p>{item.description}</p>
-                <p>{item.id}</p>
-                <img
-                  src={item.image}
-                  alt={item.title}
-                  style={{ width: '100px' }}
-                />
-                <p className="text-primary">Price: ${item.price}</p>
-                <p>
-                  Rating: {item.rating.rate} ({item.rating.count} reviews)
-                </p>
-                <p>{item.title}</p>
-              </div>
-            ))}
-          </div>
-        </div>
       </div>
     </Router>
   );
